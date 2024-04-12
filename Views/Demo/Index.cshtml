@@ -1,1 +1,270 @@
-﻿<h4>DEMO</h4>
+﻿<div class="form-filter">
+    <div class="form-row">
+        <div class="form-group col-md-9">
+            <label>Từ khóa</label>
+            <input class="form-control" type="text" id="tu-khoa-search" />
+        </div>
+    </div>
+    <div class="form-group group-button-action text-right">
+        <button type="button" class="btn btn-primary filter-btn" id="filter-btn">Tìm kiếm</button>
+        <button type="button" class="btn btn-light" id="filter-cancel-btn">Tất cả</button>
+    </div>
+</div>
+<div class="form-filter">
+    <button type="button" class="btn btn-primary filter-btn" data-toggle="modal" data-target="#modalAdd">Thêm mới</button>
+</div>
+<div class="table-tree-wrapper table-form-field">
+    <div style="width:100%; margin:0 auto;">
+        <table id="dataGrid" class="table-border row-border compact" cellspacing="0">
+            <thead>
+                <tr>
+                    <th class="center-align">STT</th>
+                    <th>Họ tên</th>
+                    <th>Chức năng</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+<!-- Modal add-->
+<div class="modal right fade" id="modalAdd" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Thêm mới</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <input id="nameAdd" required="required" type="text" autocomplete="off" class="form-control" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-light" data-dismiss="modal">Hủy bỏ</button>
+                <button type="button" class="btn btn-secondary" onclick="addData()">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal edit-->
+<div class="modal right fade" id="modalEdit" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Cập nhật</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <input id="idEdit" type="hidden" class="form-control" />
+                <input id="nameEdit" required="required" type="text" autocomplete="off" class="form-control" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-light" data-dismiss="modal">Hủy bỏ</button>
+                <button type="button" class="btn btn-secondary" onclick="editData()">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal delete-->
+<div class="modal right fade" id="modalDelete" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Xóa</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <input id="idDelete" type="hidden" class="form-control" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-light" data-dismiss="modal">Hủy bỏ</button>
+                <button type="button" class="btn btn-secondary" onclick="deleteData()">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const url = window.location;
+    const BASEURL = url.protocol + "//" + url.hostname + url.port;
+
+    $(document).ready(function () {
+        $('#filter-btn').on('click', function () {
+            $('#dataGrid').DataTable().ajax.reload().draw();
+        });
+
+        $('#filter-cancel-btn').on('click', function () {
+            $('#tu-khoa-search').val("");
+
+            $('#dataGrid').DataTable().ajax.reload().draw();
+        });
+
+        $('#tu-khoa-search').on("keydown", function search(e) {
+            if (e.keyCode == 13) {
+                $('#dataGrid').DataTable().ajax.reload().draw();
+            }
+        });
+
+        $('.select-control').select2({
+            theme: 'bootstrap4',
+            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+            language: "vi",
+            placeholder: $(this).data('placeholder'),
+        });
+
+        function buildData() {
+            let tuKhoa = $('#tu-khoa-search').val();
+
+            const request = {
+                "TuKhoa": tuKhoa,
+            };
+
+            return request;
+        };
+
+        let table = $('#dataGrid').DataTable({
+            "pageLength": 20,
+            "autoWidth": false,
+            "ordering": false,
+            "bInfo": false,
+            "bDestroy": true,
+            "lengthMenu": [5, 10, 15, 20, 25, 50, 100],
+            "filter": false,
+            "language": {
+                "sProcessing": "Đang xử lý...",
+                "sLengthMenu": "_MENU_",
+                "sZeroRecords": "Không có dữ liệu",
+                "sEmptyTable": "Bảng trống",
+                "sInfo": "Hiện dòng _START_ đến _END_ trong tổng _TOTAL_ dòng",
+                "sInfoEmpty": "Hiện dòng 0 đến 0 trong tổng 0 dòng",
+                "sSearch": "Tìm kiếm",
+                "sLoadingRecords": "Đang tải...",
+                "paginate": {
+                    next: '<i class="icon-fluent icon_fluent_chevron_right_filled"></i>',
+                    previous: '<i class="icon-fluent icon_fluent_chevron_left_filled"></i>'
+                }
+            },
+            "ajax": {
+                url: `${BASEURL}/api/TuanMVC/AuthorApi/Gets`,
+                type: "POST",
+                data: buildData,
+                dataSrc: function (data) {
+                    if (data && data.length > 0) {
+                        for (let i = 0; i < data.length; i++) {
+                            data[i].stt = i + 1;
+                        }
+
+                        return data;
+                    }
+
+                    return [];
+                },
+            },
+            columnDefs: [
+                {
+                    targets: 2,
+                    render: function (data, type, row, meta) {
+                        return `<span title="Chỉnh sửa" class="edit-command-btn" id=n-"${meta.row}">Edit</span>
+                                <span title="Xóa" class="delete-command-btn" id=n-"${meta.row}">Delete</span>`;
+                    }
+                }
+            ],
+            "columns": [
+                { data: "stt", "width": "30px", "class": "stt-text center-align" },
+                { data: "Name", "class": "left-align" },
+                { data: "ID", "width": "150px" },
+            ]
+        });
+
+        $('#dataGrid tbody').on('click', '.delete-command-btn', function () {
+            var id = $(this).attr("ID").match(/\d+/)[0];
+            var data = $('#dataGrid').DataTable().row(id).data();
+
+            $('#idDelete').val(data.ID);
+
+            $('#modalDelete').modal('show');
+        });
+
+        $('#dataGrid tbody').on('click', '.edit-command-btn', function () {
+            let id = $(this).attr("ID").match(/\d+/)[0];
+            let data = $('#dataGrid').DataTable().row(id).data();
+
+            $('#idEdit').val(data.ID);
+            $('#nameEdit').val(data.Name);
+
+            $('#modalEdit').modal('show');
+        });
+    });
+
+    function addData() {
+        const name = $('#nameAdd').val();
+
+        if (name != null && name != "") {
+            const request = {
+                "Name": name,
+            };
+
+            $.ajax({
+                url: `${BASEURL}/api/TuanMVC/AuthorApi/Add`,
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(request),
+                success: function (data) {
+                    $('#dataGrid').DataTable().ajax.reload().draw();
+                    $('#modalAdd').modal('hide');
+
+                    $('#modalAdd input[type="text"]').val("");
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+    };
+
+    function editData() {
+        const id = $('#idEdit').val();
+        const name = $('#nameEdit').val();
+
+        if (id != null && id != "" && name != null && name != "") {
+            const request = {
+                "ID": id,
+                "Name": name,
+            };
+
+            $.ajax({
+                url: `${BASEURL}/api/TuanMVC/AuthorApi/Edit`,
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(request),
+                success: function (data) {
+                    $('#dataGrid').DataTable().ajax.reload().draw();
+                    $('#modalEdit').modal('hide');
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+    };
+
+    function deleteData() {
+        const id = $('#idDelete').val();
+
+        if (id != null && id != "") {
+            $.ajax({
+                url: `${BASEURL}/api/TuanMVC/AuthorApi/Delete?data=${id}`,
+                type: "POST",
+                success: function (data) {
+                    $('#dataGrid').DataTable().ajax.reload().draw();
+                    $('#modalDelete').modal('hide');
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+    };
+
+</script>
