@@ -96,5 +96,65 @@
         </component>
       </components>
     </package>
+    <package name="TuanMVC_DEMO" type="Module" version="00.00.01">
+      <friendlyName>TuanMVC_DEMO</friendlyName>
+      <description>TuanMVC_DEMO</description>
+      <iconFile>~/Icons/Sigma/Software_32X32_Standard.png</iconFile>
+      <owner>
+        <name>Christoc.com</name>
+        <organization>Christoc.com</organization>
+        <url>http://www.christoc.com/</url>
+        <email>modules@christoc.com</email>
+      </owner>
+      <license src="License.txt"></license>
+      <releaseNotes src="ReleaseNotes.txt"></releaseNotes>
+      <dependencies>
+        <dependency type="CoreVersion">08.00.00</dependency>
+      </dependencies>
+      <components>
+        <component type="ResourceFile">
+          <resourceFiles>
+            <basePath>DesktopModules/MVC/TuanMVC</basePath>
+            <resourceFile>
+              <name>Resources.zip</name>
+            </resourceFile>
+          </resourceFiles>
+        </component>
+        <component type="Module">
+          <desktopModule>
+            <moduleName>TuanMVC_DEMO</moduleName>
+            <foldername>TuanMVC</foldername>
+            <!--<businessControllerClass>Christoc.Modules.TuanMVC.Components.FeatureController</businessControllerClass>-->
+            <supportedFeatures />
+            <moduleDefinitions>
+              <moduleDefinition>
+                <friendlyName>TuanMVC_DEMO</friendlyName>
+                <defaultCacheTime>0</defaultCacheTime>
+                <moduleControls>
+                  <moduleControl>
+                    <controlKey />
+                    <controlSrc>Christoc.Modules.TuanMVC.Controllers/Demo/Index.mvc</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle />
+                    <controlType>View</controlType>
+                    <iconFile />
+                    <helpUrl />
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                </moduleControls>
+              </moduleDefinition>
+            </moduleDefinitions>
+          </desktopModule>
+        </component>
+        <component type="Assembly">
+          <assemblies>
+            <assembly>
+              <name>TuanMVC.dll</name>
+              <path>bin</path>
+            </assembly>
+          </assemblies>
+        </component>
+      </components>
+    </package>
   </packages>
 </dotnetnuke>
