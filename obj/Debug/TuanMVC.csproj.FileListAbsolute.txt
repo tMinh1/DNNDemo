@@ -1,0 +1,10 @@
+C:\Websites\dnndev.me\bin\TuanMVC.dll.config
+C:\Websites\dnndev.me\bin\TuanMVC.dll
+C:\Websites\dnndev.me\bin\TuanMVC.pdb
+C:\Websites\dnndev.me\DesktopModules\MVC\TuanMVC\obj\Debug\TuanMVC.csprojAssemblyReference.cache
+C:\Websites\dnndev.me\DesktopModules\MVC\TuanMVC\obj\Debug\Christoc.Modules.TuanMVC.App_LocalResources.Settings.resources
+C:\Websites\dnndev.me\DesktopModules\MVC\TuanMVC\obj\Debug\TuanMVC.csproj.GenerateResource.cache
+C:\Websites\dnndev.me\DesktopModules\MVC\TuanMVC\obj\Debug\TuanMVC.csproj.CoreCompileInputs.cache
+C:\Websites\dnndev.me\DesktopModules\MVC\TuanMVC\obj\Debug\TuanMVC.csproj.CopyComplete
+C:\Websites\dnndev.me\DesktopModules\MVC\TuanMVC\obj\Debug\TuanMVC.dll
+C:\Websites\dnndev.me\DesktopModules\MVC\TuanMVC\obj\Debug\TuanMVC.pdb
